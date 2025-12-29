@@ -8,23 +8,37 @@
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="top-bar">
   <h1>My Cart</h1>
 </header>
 
+<!-- CART ITEMS -->
 <section class="cart-container" id="cartItems">
-  <!-- Items will be dynamically loaded here -->
+  <p id="emptyCartMsg" style="text-align:center;color:#777;">
+    Your cart is empty
+  </p>
 </section>
 
+<!-- CART FOOTER -->
 <div class="cart-footer">
   <p>Total: ₹<span id="total">0</span></p>
   <button class="order-btn" onclick="goToCheckout()">Place Order</button>
 </div>
 
+<!-- MAIN SCRIPT -->
 <script src="script.js"></script>
+
 <script>
-  // Always reload cart from localStorage on page load
-  document.addEventListener("DOMContentLoaded", loadCart);
+  document.addEventListener("DOMContentLoaded", () => {
+    loadCart();
+
+    // Hide empty message if cart has items
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    if (cart.length > 0) {
+      document.getElementById("emptyCartMsg").style.display = "none";
+    }
+  });
 </script>
 
 </body>

@@ -14,7 +14,7 @@
 
   <h2>Create Account</h2>
 
-  <form onsubmit="signup(event)">
+  <form id="signupForm">
     <input id="sname" type="text" placeholder="Full Name" required>
     <input id="sphone" type="text" placeholder="Phone" required>
     <input id="spassword" type="password" placeholder="Password" required>
@@ -26,33 +26,49 @@
       <option value="shopkeeper">Shopkeeper</option>
     </select>
 
-    <button class="auth-btn">Signup</button>
+    <button type="submit" class="auth-btn">Signup</button>
   </form>
 </div>
 
 <script>
-const API = "http://127.0.0.1:5000"; // change to LAN IP for phone testing
+/* ✅ MUST BE PUBLIC BACKEND */
+const API = "https://apna-market-backend.onrender.com";
 
-async function signup(e){
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const res = await fetch(`${API}/signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: document.getElementById("sname").value,
-      phone: document.getElementById("sphone").value,
-      password: document.getElementById("spassword").value,
-      role: document.getElementById("srole").value
-    })
-  });
+  try {
+    const res = await fetch(`${API}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: sname.value.trim(),
+        phone: sphone.value.trim(),
+        password: spassword.value.trim(),
+        role: srole.value
+      })
+    });
 
-  const data = await res.json();
+    if (!res.ok) {
+      throw new Error("Backend unreachable");
+    }
 
-  alert("Account created successfully");
-  location.href = "login.html";
-}
+    const data = await res.json();
+
+    if (data.success) {
+      alert("Account created successfully");
+      location.href = "login.html";
+    } else {
+      alert("Signup failed");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Signup failed: Backend offline or blocked");
+  }
+});
 </script>
 
 </body>
 </html>
+

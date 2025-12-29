@@ -17,7 +17,6 @@
   <form id="loginForm">
     <input id="lphone" type="text" placeholder="Phone" required>
     <input id="lpassword" type="password" placeholder="Password" required>
-
     <button type="submit" class="auth-btn">Login</button>
   </form>
 
@@ -28,13 +27,14 @@
 </div>
 
 <script>
-const API = "http://172.22.128.110:5000"; // replace with your backend IP
+/* ✅ USE PUBLIC BACKEND ONLY */
+const API = "https://apna-market-backend.onrender.com";
 
-document.getElementById("loginForm").addEventListener("submit", async function(e) {
-  e.preventDefault(); // prevent page refresh
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-  const phone = document.getElementById("lphone").value;
-  const password = document.getElementById("lpassword").value;
+  const phone = lphone.value.trim();
+  const password = lpassword.value.trim();
 
   try {
     const res = await fetch(`${API}/login`, {
@@ -43,25 +43,29 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
       body: JSON.stringify({ phone, password })
     });
 
+    if (!res.ok) {
+      throw new Error("Server not reachable");
+    }
+
     const data = await res.json();
 
     if (data.success) {
-      alert("Login successful as " + data.role);
       localStorage.setItem("userRole", data.role);
       localStorage.setItem("userPhone", phone);
 
-      // Redirect based on role
-      if (data.role === "buyer") {
-        window.location.href = "index.html";
-      } else if (data.role === "shopkeeper") {
-        window.location.href = "shop-dashboard.html";
-      }
+      alert("Login successful");
+
+      location.href = data.role === "shopkeeper"
+        ? "shop-dashboard.html"
+        : "index.html";
+
     } else {
       alert("Invalid phone or password");
     }
+
   } catch (err) {
     console.error(err);
-    alert("Login failed. Check console.");
+    alert("Backend offline or blocked (CORS / URL issue)");
   }
 });
 </script>
