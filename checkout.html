@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | APNA MARKET</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-bar">
+  <h1>Checkout</h1>
+</header>
+
+<!-- CHECKOUT FORM -->
+<div class="auth-container">
+  <h2>Enter Your Details</h2>
+  <form onsubmit="placeOrder(event)">
+    <input type="text" id="buyerName" placeholder="Your Name" required>
+    <input type="text" id="buyerPhone" placeholder="Phone Number" required>
+    <textarea id="buyerAddress" placeholder="Delivery Address" required></textarea>
+
+    <button type="submit" class="auth-btn">Confirm Order</button>
+  </form>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Pre-fill buyer details if needed (optional)
+  document.addEventListener("DOMContentLoaded", () => {
+    const buyerName = document.getElementById("buyerName");
+    const buyerPhone = document.getElementById("buyerPhone");
+    const buyerAddress = document.getElementById("buyerAddress");
+    
+    // Example: fill from localStorage if you want
+    if (localStorage.getItem("buyerInfo")) {
+      const info = JSON.parse(localStorage.getItem("buyerInfo"));
+      buyerName.value = info.name || "";
+      buyerPhone.value = info.phone || "";
+      buyerAddress.value = info.address || "";
+    }
+  });
+</script>
+
+</body>
+</html>
+

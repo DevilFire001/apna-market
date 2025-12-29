@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <h1>Orders</h1>
+</header>
+
+<section id="orderList" class="cart-container"></section>
+
+<script>
+const API = "http://127.0.0.1:5000";
+
+async function loadOrders() {
+  const res = await fetch(`${API}/orders`);
+  const orders = await res.json();
+  const list = document.getElementById("orderList");
+
+  list.innerHTML = "";
+
+  orders.forEach(o => {
+    list.innerHTML += `
+      <div class="cart-item">
+        <h4>Order #${o.id}</h4>
+        <p><b>${o.buyer}</b> (${o.phone})</p>
+        <p>${o.address}</p>
+        <p>Total: ₹${o.total}</p>
+        <p>Status: ${o.status}</p>
+      </div>
+    `;
+  });
+}
+
+loadOrders();
+</script>
+
+</body>
+</html>
+

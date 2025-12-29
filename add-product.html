@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product | APNA MARKET</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-bar">
+  <h1>Add Product</h1>
+</header>
+
+<!-- ADD PRODUCT FORM -->
+<div class="auth-container">
+  <h2>Enter Product Details</h2>
+  <form onsubmit="saveProduct(event)">
+    <input type="text" id="pname" placeholder="Product Name" required>
+    <input type="number" id="pprice" placeholder="Price (₹)" required>
+    <input type="text" id="pweight" placeholder="Weight / Unit">
+    <input type="number" id="pqty" placeholder="Quantity" required>
+    <input type="text" id="pimage" placeholder="Image URL (optional)">
+
+    <button type="submit" class="auth-btn">Add Product</button>
+  </form>
+</div>
+
+<script src="script.js"></script>
+<script>
+  async function saveProduct(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("pname").value;
+    const price = parseFloat(document.getElementById("pprice").value);
+    const weight = document.getElementById("pweight").value;
+    const qty = parseInt(document.getElementById("pqty").value);
+    const image = document.getElementById("pimage").value || "";
+
+    // ====== For backend integration ======
+    const product = { name, price, weight, qty, image, shop_id: 1 };
+
+    try {
+      const res = await fetch(`${API}/add-product`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product)
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Product added successfully!");
+        // Clear the form
+        document.querySelector("form").reset();
+      } else {
+        alert("Failed to add product");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to server");
+    }
+
+    // ====== Optional: Save locally for testing ======
+    /*
+    let products = JSON.parse(localStorage.getItem("shopProducts")) || [];
+    products.push(product);
+    localStorage.setItem("shopProducts", JSON.stringify(products));
+    alert("Product saved locally");
+    document.querySelector("form").reset();
+    */
+  }
+</script>
+
+</body>
+</html>
+

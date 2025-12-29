@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart | APNA MARKET</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+  <h1>My Cart</h1>
+</header>
+
+<section class="cart-container" id="cartItems">
+  <!-- Items will be dynamically loaded here -->
+</section>
+
+<div class="cart-footer">
+  <p>Total: ₹<span id="total">0</span></p>
+  <button class="order-btn" onclick="goToCheckout()">Place Order</button>
+</div>
+
+<script src="script.js"></script>
+<script>
+  // Always reload cart from localStorage on page load
+  document.addEventListener("DOMContentLoaded", loadCart);
+</script>
+
+</body>
+</html>
+
